@@ -102,7 +102,7 @@ $(document).ready(function() {
     }
     
     $('#seznam-uporabnikov div').click(function() {
-      if ($(this).text() !== trenutniVzdevek) {  // ne moreš poslati zasebnega sporočila samemu sebi
+      if ($(this).text() !== trenutniVzdevek) {  // onemogočanje funkcionalnosti v primeru zasebnega sporočila samemu sebi
       $('#poslji-sporocilo').val('/zasebno ' + '"' + $(this).text() + '" ');
       $('#poslji-sporocilo').focus();
       }
