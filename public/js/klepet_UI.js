@@ -102,7 +102,7 @@ $(document).ready(function() {
   });
   
   socket.on('dregljaj', function () {
-    // Initialize jRumble on Selector
+    // Initialize jRumble
     $('#vsebina').jrumble({
 	                        x: 2,
 	                        y: 2,
