@@ -1,6 +1,7 @@
 function divElementEnostavniTekst(sporocilo) {
   var jeSmesko = sporocilo.indexOf('http://sandbox.lavbic.net/teaching/OIS/gradivo/') > -1;
   var jeSlika = sporocilo.match(/(https?:\/\/\S+\.(?:png|jpg|gif))/ig) != null;
+  
   if (jeSmesko || jeSlika) {
     console.log(sporocilo);
     sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace(/&lt;img/g, '<img').replace(/png\' \/&gt;/g, 'png\' />').replace(/&lt;br&gt;/g, '<br>').replace(/200\' \/&gt;/g, '200\' />');
