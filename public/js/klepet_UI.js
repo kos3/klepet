@@ -115,6 +115,19 @@ $(document).ready(function() {
       }
     });
   });
+  
+  socket.on('dregljaj', function () {
+    // Initialize jRumble
+    $('#vsebina').jrumble({
+	                        x: 2,
+	                        y: 2,
+	                        rotation: 1});
+    // Start rumble on element
+    $('#vsebina').trigger('startRumble');
+    // Stop rumble on element after 1500ms
+    setTimeout(function() { $('#vsebina').trigger('stopRumble');  }, 1500);
+      
+  });
 
   setInterval(function() {
     socket.emit('kanali');
