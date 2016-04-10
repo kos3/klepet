@@ -1,11 +1,10 @@
 function divElementEnostavniTekst(sporocilo) {
   var jeSmesko = sporocilo.indexOf('http://sandbox.lavbic.net/teaching/OIS/gradivo/') > -1;
   var jeSlika = sporocilo.match(/(https?:\/\/\S+\.(?:png|jpg|gif))/ig) != null;
+  var jeYoutube = sporocilo.indexOf('https://www.youtube.com/watch?v=') > -1;
   
-  if (jeSmesko || jeSlika) {
-    console.log(sporocilo);
-    sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace(/&lt;img/g, '<img').replace(/png\' \/&gt;/g, 'png\' />').replace(/&lt;br&gt;/g, '<br>').replace(/200\' \/&gt;/g, '200\' />');
-    console.log(sporocilo);
+  if (jeSmesko || jeSlika || jeYoutube) {
+    sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace(/&lt;img/g, '<img').replace(/&lt;iframe/g, '<iframe').replace(/png\' \/&gt;/g, 'png\' />').replace(/&lt;br&gt;/g, '<br>').replace(/200\' \/&gt;/g, '200\' />').replace(/200\'&gt;&lt;\/iframe&gt;/g, '200\'></iframe>');
     return $('<div style="font-weight: bold"></div>').html(sporocilo);
   } else {
     return $('<div style="font-weight: bold;"></div>').text(sporocilo);
@@ -18,7 +17,9 @@ function divElementHtmlTekst(sporocilo) {
 
 function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
+
   sporocilo = dodajSlike(sporocilo);
+  sporocilo = dodajYoutube(sporocilo);
   sporocilo = dodajSmeske(sporocilo);
   
   var sistemskoSporocilo;
@@ -132,10 +133,22 @@ $(document).ready(function() {
 
 function dodajSlike(vhodnoBesedilo) {
   var slike = vhodnoBesedilo.match(/(https?:\/\/\S+?\.(?:png|jpg|gif))/ig);
-  console.log(slike);
   if (slike != null) {
     for (var i=0; i<slike.length; i++) {
       vhodnoBesedilo += "<br><img src='" + slike[i] + "' style='padding-left:20px' width='200' />";
+    }
+  }
+  return vhodnoBesedilo;
+}
+
+function dodajYoutube(vhodnoBesedilo) {
+  var youtube = vhodnoBesedilo.match(/(https?:\/\/www\.youtube\.com\/watch\?v=\w{11})/ig);
+  if (youtube != null) {
+    for (var i=0; i<youtube.length; i++) {
+      vhodnoBesedilo += "<br><iframe src='https://www.youtube.com/embed/" +
+                        youtube[i].substr(youtube[i].length - 11) +
+                        "' allowfullscreen style='margin-left:20px;' height='150' width='200'>" +
+                        "</iframe>";
     }
   }
   return vhodnoBesedilo;
